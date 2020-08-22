@@ -2,14 +2,22 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 export class AddTodo extends Component {
+  
   state = {
-    title: ''
+    title: '',
+    listId: 0
+  }
+
+  constructor(props) {
+    super(props);
+    this.state.listId = props.listId;
+    console.log(props);
   }
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value  });
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.addTodo(this.state.title);
+    this.props.addTodo(this.state.title, this.state.listId);
     this.setState({ title: ''});
   }
 

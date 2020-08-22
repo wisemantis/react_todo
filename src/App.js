@@ -18,8 +18,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      .then(res => this.setState({ todos: res.data }))	
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then(
+        res => this.setState({ todos: res.data })
+        )	
   }
 
   // Toggle Complete
@@ -41,10 +43,12 @@ class App extends React.Component {
   }
 
   // Add Todo
-  addTodo = (title) => { 
+  addTodo = (title, listId) => { 
+    console.log(listId);
     axios.post('https://jsonplaceholder.typicode.com/todos', {
       title,
-      completed:false
+      completed:false,
+      userId: listId
     }).then(
       res => this.setState({todos: [...this.state.todos,res.data]})
     );
@@ -58,8 +62,16 @@ class App extends React.Component {
             <Header />
             <Route exact path="/" render={props => (
               <React.Fragment>
-                <AddTodo addTodo={this.addTodo} />
-  	        <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo}/>
+                
+  	            <div className="list">
+                  <AddTodo addTodo={this.addTodo} listId="1" />
+                  <Todos todos={this.state.todos.filter(todo => todo.userId==1)} markComplete={this.markComplete} delTodo={this.delTodo}/></div>
+                <div className="list">
+                  <AddTodo addTodo={this.addTodo} listId="2" />
+                  <Todos todos={this.state.todos.filter(todo => todo.userId==2)} markComplete={this.markComplete} delTodo={this.delTodo}/></div>
+                <div className="list">
+                  <AddTodo addTodo={this.addTodo} listId="3" />
+                  <Todos todos={this.state.todos.filter(todo => todo.userId==3)} markComplete={this.markComplete} delTodo={this.delTodo}/></div>              
               </React.Fragment>
             )} />
             <Route path="/about" component={About} />
